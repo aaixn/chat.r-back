@@ -16,8 +16,11 @@ app.get('/', (req, res) => {
     res.send('Hey Po')
 })
 
-const usersController = require('./controllers/users')
+const usersController = require('./controllers/usersController')
 app.use('/api/users', usersController)
+
+const authController = require('./controllers/authController')
+app.use('/api/auth', authController)
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

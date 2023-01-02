@@ -2,8 +2,10 @@ const express = require('express')
 const pool = require('../db/db')
 const router = express.Router()
 const bcrypt = require('bcrypt')
+const jwtTokens = require('../utils/jwt')
+const authToken = require('../middleware/auth')
 
-router.get('/', async (req, res, next) => {
+router.get('/', authToken, async (req, res, next) => {
     try {
         const users = await pool.query('SELECT * FROM users')
         res.json({users: users.rows})
@@ -27,28 +29,5 @@ router.post('/signup', async (req, res, next) => {
     }
 })
 
-// log in
-router.post('/login', async(req, res, next) => {
-    try {
-        const {username, password} = req.body
-        const users = await pool.query('SELECT * FROM users WHERE username=$1', [username])
-        
-        // username check
-        if (users.rows.length) {
-            const checkPassword = await bcrypt.compare(password, users.rows[0].password)
-            if (!checkPassword) {
-                return res.status(401).json({error: 'Incorrect password.'})
-            }
-            else {
-                return res.status(200).json('Success!')
-            }
-        }
-        else {
-            res.status(400).json({error: 'User does not exist.'})
-        }
-    } catch(err) {
-        next(err)
-    }
-})
 
 module.exports = router
