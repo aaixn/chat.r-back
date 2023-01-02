@@ -1,9 +1,10 @@
 -- CREATE TABLE users (
 --     id SERIAL NOT NULL PRIMARY KEY,
+--     name VARCHAR(50) NOT NULL,
 --     username VARCHAR(50) NOT NULL UNIQUE,
---     password VARCHAR(50) NOT NULL,
+--     password TEXT NOT NULL,
 --     pfp TEXT NOT NULL DEFAULT 'https://i.imgur.com/igF2kHr.png',
---     friends INTEGER[],
+--     friends INTEGER[] NOT NULL DEFAULT '{}'::int[],
 --     active BOOLEAN
 -- );
 
@@ -16,4 +17,5 @@
 --     read BOOLEAN
 -- );
 
--- INSERT INTO users (username, password, active) VALUES('test', 'test', true);
+-- INSERT INTO users (name, username, password, active) VALUES('tester1', 'test', 'test', true);
+-- INSERT INTO users (name, username, password, active) VALUES('tester2', 'test2', 'test2', true);
