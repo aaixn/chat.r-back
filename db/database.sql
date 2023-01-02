@@ -15,3 +15,5 @@
 --     time_stamp TIMESTAMP NOT NULL DEFAULT now(),
 --     read BOOLEAN
 -- );
+
+-- INSERT INTO users (username, password, active) VALUES('test', 'test', true);
