@@ -2,9 +2,8 @@ const jwt = require('jsonwebtoken')
 
 const jwtTokens = ({id, name, username, pfp, friends, active}) => {
     const user = {id, name, username, pfp, friends, active}
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '14d'})
-    return({accessToken, refreshToken})
+    const token = jwt.sign(user, process.env.TOKEN_SECRET)
+    return(token)
 }
 
 module.exports = jwtTokens

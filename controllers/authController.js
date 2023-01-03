@@ -23,9 +23,8 @@ router.post('/login', async(req, res, next) => {
                 return res.status(401).json({error: 'Incorrect password.'})
             }
             else {
-                let tokens = jwtTokens(users.rows[0])
-                res.cookie('refresh_token', tokens.refreshToken,{httpOnly: true})
-                res.json({tokens, id, name, username, pfp, bio})
+                const token = jwtTokens(users.rows[0])
+                res.status(200).json({token, id, name, username, pfp, bio})
             }
         }
         else {
@@ -37,31 +36,31 @@ router.post('/login', async(req, res, next) => {
     }
 })
 
-router.get('/refresh_token', (req, res, next) => {
-    try {
-        const refreshToken = req.cookies.refresh_token
-        if (!refreshToken) return res.status(401).json({error: 'Null refresh token.'})
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-            if (err) return res.status(403).json({error: err.message})
-            let tokens = jwtTokens(user)
-            res.cookie('refresh_token', tokens.refreshToken, {...(process.env.COOKIE_DOMAIN && {domain: process.env.COOKIE_DOMAIN}) , httpOnly: true,sameSite: 'none', secure: true});
-            return res.json(tokens)
-        })
-    } catch (err) {
-        next(err)
-        res.status(401).json({error: err.message})
-    }
-})
+// router.get('/refresh_token', (req, res, next) => {
+//     try {
+//         const refreshToken = req.cookies.refresh_token
+//         if (!refreshToken) return res.status(401).json({error: 'Null refresh token.'})
+//         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+//             if (err) return res.status(403).json({error: err.message})
+//             let tokens = jwtTokens(user)
+//             res.cookie('refresh_token', tokens.refreshToken, {...(process.env.COOKIE_DOMAIN && {domain: process.env.COOKIE_DOMAIN}) , httpOnly: true,sameSite: 'none', secure: true});
+//             return res.json(tokens)
+//         })
+//     } catch (err) {
+//         next(err)
+//         res.status(401).json({error: err.message})
+//     }
+// })
 
-// log out
-router.delete('/refresh_token', (req, res, next) => {
-    try {
-        res.clearCookie('refresh_token');
-        return res.status(200).json({message: 'Refresh token deleted.'})
-    } catch (err) {
-        next(err)
-        res.status(401).json({error: err.message})
-    }
-})
+// // log out
+// router.delete('/refresh_token', (req, res, next) => {
+//     try {
+//         res.clearCookie('refresh_token');
+//         return res.status(200).json({message: 'Refresh token deleted.'})
+//     } catch (err) {
+//         next(err)
+//         res.status(401).json({error: err.message})
+//     }
+// })
 
 module.exports = router
