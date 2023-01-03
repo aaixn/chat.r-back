@@ -60,8 +60,7 @@ router.get('/:username/friends', authToken, async (req, res, next) => {
             const result = await searchFriend(id)
             return result.rows
         }))
-
-        res.json(...test)
+        res.json(...friends)
     } catch (err) {
         next(err)
         res.status(500).json({error : err.message})
