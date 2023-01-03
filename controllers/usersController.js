@@ -29,5 +29,19 @@ router.post('/signup', async (req, res, next) => {
     }
 })
 
+// get user profile
+router.get('/:username', authToken, async (req, res, next) => {
+    try {
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+        res.json(user.rows[0])
+    } catch (err) {
+        next(err)
+        res.status(500).json({error : err.message})
+    }
+})
+
+// get user friends
+
 
 module.exports = router
