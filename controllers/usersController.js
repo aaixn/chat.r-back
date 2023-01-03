@@ -42,6 +42,15 @@ router.get('/:username', authToken, async (req, res, next) => {
 })
 
 // get user friends
-
+router.get('/:username/friends', authToken, async (req, res, next) => {
+    try {
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+        res.json(user.rows[0].friends)
+    } catch (err) {
+        next(err)
+        res.status(500).json({error : err.message})
+    }
+})
 
 module.exports = router
