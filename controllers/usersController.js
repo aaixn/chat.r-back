@@ -17,11 +17,17 @@ router.get('/', authToken, async (req, res, next) => {
 // sign up
 router.post('/signup', async (req, res, next) => {
     try {
-        const hashPassword = await bcrypt.hash(req.body.password, 10)
-        const newUser = await pool.query(
+        const usernameExists = await pool.query('SELECT * FROM users WHERE username=$1', [req.body.username])
+        // console.log(usernameExists.rows[0]);
+        if (usernameExists.rows[0]) {
+            res.json('Username taken.')
+        } else {
+            const hashPassword = await bcrypt.hash(req.body.password, 10)
+            const newUser = await pool.query(
             'INSERT INTO users (name, username, password) VALUES ($1, $2, $3) RETURNING *', 
             [req.body.name, req.body.username, hashPassword])
-        res.json({users: newUser.rows[0]})
+            res.json({users: newUser.rows[0]})
+        }
     } catch (err) {
         next(err)
         res.status(500).json({error : err.message})
