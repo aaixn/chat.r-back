@@ -13,6 +13,11 @@ router.post('/login', async(req, res, next) => {
         
         // username check
         if (users.rows.length) {
+            const id = users.rows[0].id
+            const name = users.rows[0].name
+            const username = users.rows[0].username
+            const pfp = users.rows[0].pfp
+            const bio = users.rows[0].bio
             const checkPassword = await bcrypt.compare(password, users.rows[0].password)
             if (!checkPassword) {
                 return res.status(401).json({error: 'Incorrect password.'})
@@ -20,7 +25,7 @@ router.post('/login', async(req, res, next) => {
             else {
                 let tokens = jwtTokens(users.rows[0])
                 res.cookie('refresh_token', tokens.refreshToken,{httpOnly: true})
-                res.json(tokens)
+                res.json({tokens, id, name, username, pfp, bio})
             }
         }
         else {

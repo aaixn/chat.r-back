@@ -2,7 +2,7 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const dotenv = require('dotenv')
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 4000
 const app = express()
 
 // middleware
@@ -21,6 +21,12 @@ app.use('/api/users', usersController)
 
 const authController = require('./controllers/authController')
 app.use('/api/auth', authController)
+
+const messageController = require('./controllers/messageController')
+app.use('/api/messages', messageController)
+
+const friendRequestsController = require('./controllers/friendRequestsController')
+app.use('/api/friendRequest', friendRequestsController)
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

@@ -2,7 +2,6 @@ const express = require('express')
 const pool = require('../db/db')
 const router = express.Router()
 const bcrypt = require('bcrypt')
-const jwtTokens = require('../utils/jwt')
 const authToken = require('../middleware/auth')
 
 router.get('/', authToken, async (req, res, next) => {
@@ -29,5 +28,62 @@ router.post('/signup', async (req, res, next) => {
     }
 })
 
+// get user profile
+router.get('/:username', authToken, async (req, res, next) => {
+    try {
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+        res.json(user.rows[0])
+    } catch (err) {
+        next(err)
+        res.status(500).json({error : err.message})
+    }
+})
+
+// get user friends
+router.get('/:username/friends', authToken, async (req, res, next) => {
+    try {
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+
+        const searchFriend = async (id) => {
+            return await pool.query(`SELECT * FROM users WHERE id=${id}`)
+        }
+
+        const friends = await Promise.all(await user.rows[0].friends.map(async (id) => {
+            const result = await searchFriend(id)
+            return result.rows
+        }))
+
+        res.json(...test)
+    } catch (err) {
+        next(err)
+        res.status(500).json({error : err.message})
+    }
+})
+
+router.put('/:username/addFriend', authToken, async (req, res, next) => {
+    try {
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+        const friends = [...user.rows[0].friends, req.body.id]
+        const editUser = await pool.query('UPDATE users SET friends=$1 WHERE username=$2 RETURNING *', [friends, username])
+        res.json(editUser.rows)
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.put('/:username', authToken, async (req, res, next) => {
+    try {
+        const {name, pfp, bio} = req.body
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+        const editUser = await pool.query('UPDATE users SET name=$1, pfp=$2, bio=$3 RETURNING *', [name, pfp, bio])
+        res.json(editUser.rows)
+    } catch (err) {
+        next(err)
+    }
+})
 
 module.exports = router
