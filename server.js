@@ -22,6 +22,12 @@ app.use('/api/users', usersController)
 const authController = require('./controllers/authController')
 app.use('/api/auth', authController)
 
+const messageController = require('./controllers/messageController')
+app.use('/api/messages', messageController)
+
+const friendRequestsController = require('./controllers/friendRequestsController')
+app.use('/api/friendRequest', friendRequestsController)
+
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 })

@@ -55,7 +55,7 @@ router.get('/:username/friends', authToken, async (req, res, next) => {
             return result.rows
         }))
 
-        res.json(...friends)
+        res.json(...test)
     } catch (err) {
         next(err)
         res.status(500).json({error : err.message})
@@ -68,6 +68,18 @@ router.put('/:username/addFriend', authToken, async (req, res, next) => {
         const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
         const friends = [...user.rows[0].friends, req.body.id]
         const editUser = await pool.query('UPDATE users SET friends=$1 WHERE username=$2 RETURNING *', [friends, username])
+        res.json(editUser.rows)
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.put('/:username', authToken, async (req, res, next) => {
+    try {
+        const {name, pfp, bio} = req.body
+        const username = req.params.username
+        const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
+        const editUser = await pool.query('UPDATE users SET name=$1, pfp=$2, bio=$3 RETURNING *', [name, pfp, bio])
         res.json(editUser.rows)
     } catch (err) {
         next(err)
