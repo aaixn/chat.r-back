@@ -4,11 +4,13 @@ const router = express.Router()
 const authToken = require('../middleware/auth')
 
 // get convo between two users
-router.get('/', authToken, async (req, res, next) => {
+router.get('/:senderUsername/:receiverUsername', authToken, async (req, res, next) => {
     try {
-        const {sender_id, receiver_id} = req.body
-        const chat = await pool.query('SELECT * FROM users WHERE sender_id=$1 AND receiver_id=$2', [sender_id, receiver_id])
-        res.json(chat)
+        const {senderUsername, receiverUsername} = req.params
+        const senderId = await pool.query('SELECT id FROM users WHERE username=$1', [senderUsername])
+        const receiverId = await pool.query('SELECT id FROM users WHERE username=$1', [receiverUsername])
+        const chat = await pool.query('SELECT * FROM messages WHERE sender_id=$1 AND receiver_id=$2', [senderId.rows[0].id, receiverId.rows[0].id])
+        res.json(chat.rows)
     } catch (err) {
         next(err)
         res.status(500).json({error: err.message})

@@ -27,3 +27,4 @@
 -- INSERT INTO users (name, username, password, active) VALUES('tester1', 'test', 'test', true);
 -- INSERT INTO users (name, username, password, active) VALUES('tester2', 'test2', 'test2', true);
 -- INSERT INTO friend_requests (sender_id, receiver_id) VALUES(2, 1);
+-- INSERT INTO messages (sender_id, receiver_id, content) VALUES(1, 5, 'hi buh');
