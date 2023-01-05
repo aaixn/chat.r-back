@@ -42,10 +42,6 @@ io.on('connection', (socket) => {
     // when connect
     console.log('a user connected');
 
-    socket.on('user', userId => {
-        console.log(userId);
-    })
-
     // socket.on('sendMessage', ({senderId, receiverId, content}) => {
     //     io.to(Zw_74Yqp7G3QqeA7AAAJ).emit('receiveMessage', {
     //         senderId,
