@@ -4,6 +4,16 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const PORT = process.env.PORT || 4000
 const app = express()
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+        credentials: "true"
+    }
+})
 
 // middleware
 app.use(cors())
@@ -28,6 +38,24 @@ app.use('/api/messages', messageController)
 const friendRequestsController = require('./controllers/friendRequestsController')
 app.use('/api/friendRequest', friendRequestsController)
 
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
+io.on('connection', (socket) => {
+    // when connect
+    console.log('a user connected');
+
+    // socket.on('sendMessage', ({senderId, receiverId, content}) => {
+    //     io.to(Zw_74Yqp7G3QqeA7AAAJ).emit('receiveMessage', {
+    //         senderId,
+    //         content
+    //     })
+    // })
+
+    // when disconnect
+    socket.on('disconnect', () => {
+        console.log('a user disconnected');
+    })
+})
+
+
+server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
 })
