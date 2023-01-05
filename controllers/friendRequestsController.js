@@ -9,7 +9,29 @@ router.get('/:username', authToken, async (req, res, next) => {
         const username = req.params.username
         const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
         const friendRequests = await pool.query('SELECT * FROM friend_requests WHERE receiver_id=$1', [user.rows[0].id])
-        res.json(friendRequests.rows)
+        const searchFriend = async (id) => {
+            return await pool.query(`SELECT * FROM users WHERE id=${id}`)
+        }
+        const friendRequestsWithNames = await Promise.all(friendRequests.rows.map(async (item) => {
+            console.log(item.sender_id);
+            const result = await searchFriend(item.sender_id)
+            return {...item, senderName: result.rows[0].name}
+        }))
+        console.log(friendRequestsWithNames);
+        res.json(friendRequestsWithNames);
+    } catch(err) {
+        next(err)
+    }
+})
+
+// send friend request
+router.post('/', authToken, async (req, res, next) => {
+    try {
+        const {username, friendToAddUsername} = req.body
+        const senderId = await pool.query('SELECT id FROM users WHERE username=$1', [username])
+        const receiverId = await pool.query('SELECT id FROM users WHERE username=$1', [friendToAddUsername])
+        await pool.query('INSERT INTO friend_requests (sender_id, receiver_id) VALUES($1, $2)', [senderId.rows[0].id, receiverId.rows[0].id])
+        res.status(200).json(`friend request sent to ${friendToAddUsername} from ${username}`)
     } catch(err) {
         next(err)
     }

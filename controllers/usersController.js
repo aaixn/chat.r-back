@@ -60,7 +60,8 @@ router.get('/:username/friends', authToken, async (req, res, next) => {
             const result = await searchFriend(id)
             return result.rows
         }))
-        res.json(...friends)
+        console.log(...friends);
+        res.json(friends)
     } catch (err) {
         next(err)
         res.status(500).json({error : err.message})
@@ -79,6 +80,7 @@ router.put('/:username/addFriend', authToken, async (req, res, next) => {
     }
 })
 
+// edit pfp
 router.put('/:username', authToken, async (req, res, next) => {
     try {
         const {name, pfp, bio} = req.body

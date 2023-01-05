@@ -23,8 +23,8 @@ router.post('/', authToken, async (req, res, next) => {
         const {senderUsername, receiverUsername, content} = req.body
         const senderId = await pool.query('SELECT id FROM users WHERE username=$1', [senderUsername])
         const receiverId = await pool.query('SELECT id FROM users WHERE username=$1', [receiverUsername])
-        const message = await pool.query('INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3)', [senderId, receiverId, content])
-        res.json(message)
+        await pool.query('INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3)', [senderId.rows[0].id, receiverId.rows[0].id, content])
+        res.status(200).json(`message: '${content}' sent to ${receiverUsername} from ${senderUsername}`)
     } catch (err) {
         next(err)
         res.status(500).json({error: err.message})
