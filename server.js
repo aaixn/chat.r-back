@@ -72,11 +72,12 @@ io.on('connection', (socket) => {
     // send and get message
     socket.on('sendMessage', async ({senderId, recieverId, content}) => {
         const user = await getUser(recieverId)
-        io.to(user.socketId).emit('receiveMessage', 
-        {
-            senderId,
-            content
-        })
+        console.log(user);
+        // io.to(user.socketId).emit('receiveMessage', 
+        // {
+        //     senderId,
+        //     content
+        // })
     })
 
     // when disconnect
