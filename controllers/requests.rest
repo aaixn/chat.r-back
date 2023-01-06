@@ -1,0 +1,33 @@
+// sign up
+POST http://localhost:4000/api/users/signup
+Content-Type: application/json
+
+{
+    "name": "po",
+    "username": "pup",
+    "password": "po"
+}
+### 
+
+// log in
+POST http://localhost:4000/api/auth/login/
+Content-Type: application/json
+
+{
+    "username": "pup",
+    "password": "po"
+}
+
+### 
+// get users
+GET http://localhost:4000/api/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6InBvIiwidXNlcm5hbWUiOiJwdXAiLCJwZnAiOiJodHRwczovL2kuaW1ndXIuY29tL2lnRjJrSHIucG5nIiwiZnJpZW5kcyI6W10sImFjdGl2ZSI6bnVsbCwiaWF0IjoxNjcyNzAzNzU0LCJleHAiOjE2NzI3MDQ2NTR9.YLWSn5us32qeqeL7ZuBfRZ6pAFxNEePIM7FeSZKyU_s
+
+
+###
+// get tokens
+GET http://localhost:4000/api/auth/refresh_token
+
+###
+// clear tokens
+DELETE http://localhost:4000/api/auth/refresh_token
