@@ -70,8 +70,8 @@ io.on('connection', (socket) => {
     })
 
     // send and get message
-    socket.on('sendMessage', async ({senderId, recieverId, content}) => {
-        const user = await getUser(recieverId)
+    socket.on('sendMessage', async ({senderId, receiverId, content}) => {
+        const user = await getUser(receiverId)
         console.log(receiverId);
         console.log(users);
         console.log(user);
