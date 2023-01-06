@@ -55,6 +55,9 @@ router.put('/', authToken, async (req, res, next) => {
         const friends = await pool.query('SELECT friends FROM users WHERE id=$1', [receiver_id])
         const newFriends = [...friends.rows[0].friends, sender_id]
         await pool.query('UPDATE users SET friends=$1 WHERE id=$2 RETURNING *', [newFriends, receiver_id])
+        const senderFriends = await pool.query('SELECT friends FROM users WHERE id=$1', [sender_id])
+        const senderNewFriends = [...senderFriends.rows[0].friends, receiver_id]
+        await pool.query('UPDATE users SET friends=$1 WHERE id=$2 RETURNING *', [senderNewFriends, sender_id])
         const request = await pool.query('DELETE FROM friend_requests WHERE id=$1', [id])
         
         res.json(request.rows)

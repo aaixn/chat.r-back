@@ -11,8 +11,8 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
     id SERIAL NOT NULL PRIMARY KEY,
-    sender_id SERIAL NOT NULL REFERENCES users(id),
-    receiver_id SERIAL NOT NULL REFERENCES users(id),
+    sender_id SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    receiver_id SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     content TEXT NOT NULL,
     time_stamp TIMESTAMP NOT NULL DEFAULT now(),
     read BOOLEAN
@@ -20,8 +20,8 @@ CREATE TABLE messages (
 
 CREATE TABLE friend_requests (
     id SERIAL NOT NULL PRIMARY KEY,
-    sender_id SERIAL NOT NULL REFERENCES users(id),
-    receiver_id SERIAL NOT NULL REFERENCES users(id)
+    sender_id SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    receiver_id SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- INSERT INTO friend_requests(sender_id, receiver_id) VALUES(3, 1);
