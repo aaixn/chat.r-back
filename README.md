@@ -2,11 +2,11 @@
 by Ana Nguyen
 
 ## Project Description
----
+
 Chat.r is a live chat web application where users can add friends, see when their friends are active, and chat live with them. Chat.r utilizes bcrypt to hash passwords to keep passwords secure. It also utilizes JSON Web Tokens for stateless authentication. Chat.r also enables low-latency, bidirectional and event-based communication between the client and server through the usage of Socket.IO.  
 
 ## Technologies
----
+
 - Node.js
 - Express
 - Postgres
@@ -16,7 +16,7 @@ Chat.r is a live chat web application where users can add friends, see when thei
 - bcrypt
 
 ## Models
----
+
 **USERS**
 
 | Column | Description |
@@ -50,7 +50,7 @@ Chat.r is a live chat web application where users can add friends, see when thei
 |receiver_id|fk refs USERS|
 
 ## Endpoints
----
+
 **Auth Routes**
 | Route | Method | Description |
 | :---: | :---: | :---: |
@@ -82,7 +82,7 @@ Chat.r is a live chat web application where users can add friends, see when thei
 
 
 ## Installation Instructions
----
+
 1. Set secret in ./env
     ```
     TOKEN_SECRET=XXXXX
@@ -97,7 +97,7 @@ Chat.r is a live chat web application where users can add friends, see when thei
     ```
 
 ## User Stories
----
+
 User stories
 - AAU I want to be able to add new friends.
 - AAU I want to see which of my friends are active.
