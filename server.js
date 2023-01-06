@@ -20,6 +20,11 @@ app.use(cors({origin: 'http://localhost:3000', credentials: 'true'}))
 app.use(express.json())
 app.use(cookieParser())
 
+server.on('clientError', (err, socket) => {
+    console.error(err);
+    socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+  });
+
 dotenv.config()
 
 app.get('/', (req, res) => {
@@ -64,21 +69,21 @@ io.on('connection', (socket) => {
         io.emit('getUsers', users)
     })
 
-    // when disconnect
-    socket.on('disconnect', () => {
-        console.log('a user disconnected');
-        removeUser(socket.id)
-        io.emit('getUsers', users)
-    })
-
     // send and get message
-    socket.on('sendMessage', ({senderId, recieverId, content}) => {
-        const user = getUser(recieverId)
+    socket.on('sendMessage', async ({senderId, recieverId, content}) => {
+        const user = await getUser(recieverId)
         io.to(user.socketId).emit('receiveMessage', 
         {
             senderId,
             content
         })
+    })
+
+    // when disconnect
+    socket.on('disconnect', () => {
+        console.log('a user disconnected');
+        removeUser(socket.id)
+        io.emit('getUsers', users)
     })
 
     // socket.on('sendMessage', ({senderId, receiverId, content}) => {
