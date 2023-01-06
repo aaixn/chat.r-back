@@ -42,6 +42,10 @@ app.use('/api/friendRequest', friendRequestsController)
 
 let users = []
 
+const getUser = (userId) => {
+    return users.find(user => user.userId === userId)
+}
+
 const addUser = (userId, socketId) => {
     !users.some(user=>user.id === userId) && users.push({userId, socketId})
 }
@@ -60,22 +64,29 @@ io.on('connection', (socket) => {
         io.emit('getUsers', users)
     })
 
+    // when disconnect
     socket.on('disconnect', () => {
         console.log('a user disconnected');
         removeUser(socket.id)
         io.emit('getUsers', users)
     })
+
+    // send and get message
+    socket.on('sendMessage', ({senderId, recieverId, content}) => {
+        const user = getUser(recieverId)
+        io.to(user.socketId).emit('receiveMessage', 
+        {
+            senderId,
+            content
+        })
+    })
+
     // socket.on('sendMessage', ({senderId, receiverId, content}) => {
     //     io.to(Zw_74Yqp7G3QqeA7AAAJ).emit('receiveMessage', {
     //         senderId,
     //         content
     //     })
     // })
-
-    // when disconnect
-    socket.on('disconnect', () => {
-        console.log('a user disconnected');
-    })
 })
 
 

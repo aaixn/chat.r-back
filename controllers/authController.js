@@ -18,6 +18,7 @@ router.post('/login', async(req, res, next) => {
             const username = users.rows[0].username
             const pfp = users.rows[0].pfp
             const bio = users.rows[0].bio
+            const friends = users.rows[0].friends
             const checkPassword = await bcrypt.compare(password, users.rows[0].password)
             if (!checkPassword) {
                 return res.status(401).json({error: 'Incorrect password.'})
