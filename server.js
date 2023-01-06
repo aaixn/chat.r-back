@@ -38,10 +38,34 @@ app.use('/api/messages', messageController)
 const friendRequestsController = require('./controllers/friendRequestsController')
 app.use('/api/friendRequest', friendRequestsController)
 
+// socket
+
+let users = []
+
+const addUser = (userId, socketId) => {
+    !users.some(user=>user.id === userId) && users.push({userId, socketId})
+}
+
+const removeUser = (socketId) => {
+    users = users.filter(user => user.socketId !== socketId)
+}
+
 io.on('connection', (socket) => {
     // when connect
     console.log('a user connected');
+    
+    //take userId and socketId from user
+    socket.on('addUser', userId => {
+        addUser(userId, socket.id)
+        io.emit('getUsers', users)
+    })
 
+    socket.on('disconnect', () => {
+        console.log('a user disconnected');
+        removeUser(socket.id)
+        io.emit('disconnect', 'disconnect')
+        io.emit('getUsers', users)
+    })
     // socket.on('sendMessage', ({senderId, receiverId, content}) => {
     //     io.to(Zw_74Yqp7G3QqeA7AAAJ).emit('receiveMessage', {
     //         senderId,

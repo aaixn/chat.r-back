@@ -73,7 +73,7 @@ router.get('/:username/friends', authToken, async (req, res, next) => {
             return result.rows
         }))
         console.log(...friends);
-        res.json(friends)
+        res.status(200).json(friends)
     } catch (err) {
         next(err)
         res.status(500).json({error : err.message})
@@ -86,7 +86,19 @@ router.put('/:username/addFriend', authToken, async (req, res, next) => {
         const user = await pool.query('SELECT * FROM users WHERE username=$1', [username])
         const friends = [...user.rows[0].friends, req.body.id]
         const editUser = await pool.query('UPDATE users SET friends=$1 WHERE username=$2 RETURNING *', [friends, username])
-        res.json(editUser.rows)
+        res.status(200).json(editUser.rows)
+    } catch (err) {
+        next(err)
+    }
+})
+
+// change active state
+router.put('/changeActive/:username', authToken, async (req, res, next) => {
+    try {
+        const {username} = req.params
+        const {active} = req.body
+        const changeActiveState = await pool.query('UPDATE users SET active=$1 WHERE username=$2 RETURNING *', [active, username])
+        res.status(200).json(changeActiveState.rows)
     } catch (err) {
         next(err)
     }
