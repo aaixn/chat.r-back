@@ -70,8 +70,8 @@ io.on('connection', (socket) => {
     })
 
     // send and get message
-    socket.on('sendMessage', async ({senderId, receiverId, content}) => {
-        const user = await getUser(receiverId)
+    socket.on('sendMessage', ({senderId, receiverId, content}) => {
+        const user = getUser(receiverId)
         io.to(user.socketId).emit('receiveMessage', 
         {
             senderId,
