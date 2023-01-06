@@ -72,6 +72,7 @@ io.on('connection', (socket) => {
     // send and get message
     socket.on('sendMessage', async ({senderId, recieverId, content}) => {
         const user = await getUser(recieverId)
+        console.log(receiverId);
         console.log(users);
         console.log(user);
         // io.to(user.socketId).emit('receiveMessage', 
