@@ -73,12 +73,12 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', ({senderId, receiverId, content}) => {
         const user = getUser(receiverId)
         console.log(user);
-        io.to(user.socketId).emit('receiveMessage', 'hi'
-        // {
-        //     senderId,
-        //     content
-        // })
-    )})
+        io.to(user.socketId).emit('receiveMessage', 
+        {
+            senderId,
+            content
+        })
+    })
 
     // when disconnect
     socket.on('disconnect', () => {
