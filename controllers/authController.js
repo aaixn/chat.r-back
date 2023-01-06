@@ -25,7 +25,7 @@ router.post('/login', async(req, res, next) => {
             }
             else {
                 const token = jwtTokens(users.rows[0])
-                res.status(200).json({token, id, name, username, pfp, bio})
+                res.status(200).json({token, id, name, username, pfp, bio, friends})
             }
         }
         else {
