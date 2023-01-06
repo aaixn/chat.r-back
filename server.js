@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
         //     senderId,
         //     content
         // })
-    )
+    )})
 
     // when disconnect
     socket.on('disconnect', () => {
