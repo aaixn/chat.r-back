@@ -3,7 +3,7 @@ by Ana Nguyen
 
 ## Project Description
 ---
-Chat.r is a live chat web application where users can add friends, see when their friends are active, and chat live with them.
+Chat.r is a live chat web application where users can add friends, see when their friends are active, and chat live with them. Chat.r utilizes bcrypt to hash passwords to keep passwords secure. It also utilizes JSON Web Tokens for stateless authentication. Chat.r also enables low-latency, bidirectional and event-based communication between the client and server through the usage of Socket.IO.  
 
 ## Technologies
 ---
