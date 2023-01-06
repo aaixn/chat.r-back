@@ -63,7 +63,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('a user disconnected');
         removeUser(socket.id)
-        io.emit('disconnect', 'disconnect')
         io.emit('getUsers', users)
     })
     // socket.on('sendMessage', ({senderId, receiverId, content}) => {

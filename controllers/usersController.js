@@ -93,16 +93,16 @@ router.put('/:username/addFriend', authToken, async (req, res, next) => {
 })
 
 // change active state
-router.put('/changeActive/:username', authToken, async (req, res, next) => {
-    try {
-        const {username} = req.params
-        const {active} = req.body
-        const changeActiveState = await pool.query('UPDATE users SET active=$1 WHERE username=$2 RETURNING *', [active, username])
-        res.status(200).json(changeActiveState.rows)
-    } catch (err) {
-        next(err)
-    }
-})
+// router.put('/changeActive/:username', authToken, async (req, res, next) => {
+//     try {
+//         const {username} = req.params
+//         const {active} = req.body
+//         const changeActiveState = await pool.query('UPDATE users SET active=$1 WHERE username=$2 RETURNING *', [active, username])
+//         res.status(200).json(changeActiveState.rows)
+//     } catch (err) {
+//         next(err)
+//     }
+// })
 
 // edit pfp
 router.put('/:username', authToken, async (req, res, next) => {
