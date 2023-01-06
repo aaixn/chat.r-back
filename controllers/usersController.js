@@ -52,6 +52,9 @@ router.get('/search/:query', authToken, async (req, res, next) => {
         const {query} = req.params
         const matching = await pool.query('SELECT * FROM users WHERE username LIKE $1%', [query])
         res.json(matching.rows)
+    } catch(err) {
+        next(err)
+        res.status(500).json({error : err.message})
     }
 })
 
