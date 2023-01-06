@@ -10,13 +10,12 @@ const { Server } = require('socket.io')
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
-        credentials: "true"
+        origin: 'http://localhost:3000'
     }
 })
 
 // middleware
-app.use(cors({origin: 'http://localhost:3000', credentials: 'true'}))
+app.use(cors({origin: 'http://localhost:3000'}))
 app.use(express.json())
 app.use(cookieParser())
 
