@@ -10,13 +10,13 @@ const { Server } = require('socket.io')
 
 const io = new Server(server, {
     cors: {
-        origin: 'https://chat-r.vercel.app',
+        origin: ['https://chat-r.vercel.app', 'http://localhost:3000'],
         credentials: "true"
     }
 })
 
 // middleware
-app.use(cors({origin: 'https://chat-r.vercel.app', credentials: 'true'}))
+app.use(cors({origin: ['https://chat-r.vercel.app', 'http://localhost:3000'], credentials: 'true'}))
 app.use(express.json())
 app.use(cookieParser())
 
