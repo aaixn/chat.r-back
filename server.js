@@ -72,12 +72,12 @@ io.on('connection', (socket) => {
     // send and get message
     socket.on('sendMessage', ({senderId, receiverId, content}) => {
         const user = getUser(receiverId)
-        io.to(user.socketId).emit('receiveMessage', 
-        {
-            senderId,
-            content
-        })
-    })
+        io.to(user.socketId).emit('receiveMessage', 'hi'
+        // {
+        //     senderId,
+        //     content
+        // })
+    )
 
     // when disconnect
     socket.on('disconnect', () => {
@@ -86,12 +86,6 @@ io.on('connection', (socket) => {
         io.emit('getUsers', users)
     })
 
-    // socket.on('sendMessage', ({senderId, receiverId, content}) => {
-    //     io.to(Zw_74Yqp7G3QqeA7AAAJ).emit('receiveMessage', {
-    //         senderId,
-    //         content
-    //     })
-    // })
 })
 
 
